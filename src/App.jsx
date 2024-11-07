@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-const SHAKE_THRESHOLD = 15;
+const SHAKE_THRESHOLD = 25;
 const DEFAULT_FREQUENCY = 20;
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
 
   const isFirefox = typeof InstallTrigger !== "undefined";
 
-  const handleShake = () => {
+  const handleShake = (() => {
     let lastX = 0,
       lastY = 0,
       lastZ = 0;
@@ -46,7 +46,7 @@ function App() {
       lastY = y;
       lastZ = z;
     };
-  };
+  })();
 
   const initializeSensor = useCallback(() => {
     if (!("Accelerometer" in window) && !("Gyroscope" in window)) {
