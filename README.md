@@ -5,20 +5,21 @@ This project is a simple web application built with React and Vite that uses the
 # Installation
 
 1. Clone this repository to your local machine:
-
-   git clone https://github.com/your-username/shake-counter.git
-   cd shake-counter
-
-2. Install the dependencies:
-
-   npm install
-
+      ```
+      git clone https://github.com/your-username/shake-counter.git
+   
+      cd shake-counter
+      ```
+3. Install the dependencies:
+      ```
+      npm install
+      ```
 # Running the App
 
 ## Start the development server using Vite:
-
+   ```
     npm run dev
-
+   ```
 # Shake Detection Logic
 
 The app uses device motion and orientation APIs to detect shake events based on acceleration data from the device’s accelerometer or gyroscope.
