@@ -12,7 +12,7 @@ function App() {
 
   const isFirefox = typeof InstallTrigger !== "undefined";
 
-  const handleShake = (() => {
+  const handleShake = () => {
     let lastX = 0,
       lastY = 0,
       lastZ = 0;
@@ -46,7 +46,7 @@ function App() {
       lastY = y;
       lastZ = z;
     };
-  })();
+  };
 
   const initializeSensor = useCallback(() => {
     if (!("Accelerometer" in window) && !("Gyroscope" in window)) {
@@ -146,7 +146,7 @@ function App() {
       </div>
       <button
         onClick={handleReset}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 active:bg-red-700"
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
       >
         Reset counter
       </button>
