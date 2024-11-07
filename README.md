@@ -5,21 +5,26 @@ This project is a simple web application built with React and Vite that uses the
 # Installation
 
 1. Clone this repository to your local machine:
-      ```
-      git clone https://github.com/your-username/shake-counter.git
-   
-      cd shake-counter
-      ```
-3. Install the dependencies:
-      ```
-      npm install
-      ```
+
+   ```
+   git clone https://github.com/your-username/shake-counter.git
+
+   cd shake-counter
+   ```
+
+2. Install the dependencies:
+   ```
+   npm install
+   ```
+
 # Running the App
 
 ## Start the development server using Vite:
-   ```
-    npm run dev
-   ```
+
+```
+ npm run dev
+```
+
 # Shake Detection Logic
 
 The app uses device motion and orientation APIs to detect shake events based on acceleration data from the device’s accelerometer or gyroscope.
@@ -33,9 +38,9 @@ The app uses device motion and orientation APIs to detect shake events based on 
 
 2. Shake Detection:
 
-- The SHAKE_THRESHOLD constant sets a minimum acceleration value that indicates a shake.
-- Every time new data is received from the accelerometer or gyroscope, the app checks if the absolute value of acceleration on the x, y, or z axes exceeds SHAKE_THRESHOLD.
-- If so, it increments the shake count and briefly animates the counter as visual feedback for the shake.
+- Threshold-Based Detection: When the sensor detects acceleration above a predefined threshold (SHAKE_THRESHOLD) in any of the x, y, or z axes, this is considered the start of a potential shake.
+- Direction Change or Stop Check: After this initial movement, the logic waits to see if the acceleration either drops below the threshold or if there is an acceleration change in the opposite direction. This indicates a stop or reversal of movement, which is typical of a shake.
+- Debounce to Prevent Multiple Counts: To avoid registering multiple shakes for a single movement, the algorithm introduces a minimum time interval between shake detections. This debounce interval helps ensure that only distinct, intentional shakes are counted, filtering out noise from continuous or minor movements.
 
 3. Adjustable Frequency:
 
