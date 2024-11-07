@@ -12,18 +12,41 @@ function App() {
 
   const isFirefox = typeof InstallTrigger !== "undefined";
 
-  const handleShake = (sensor) => {
-    const { x, y, z } = sensor;
+  const handleShake = (() => {
+    let lastX = 0,
+      lastY = 0,
+      lastZ = 0;
+    let lastShakeDetected = false;
 
-    if (
-      Math.abs(x) > SHAKE_THRESHOLD ||
-      Math.abs(y) > SHAKE_THRESHOLD ||
-      Math.abs(z) > SHAKE_THRESHOLD
-    ) {
-      setShakeCount((prev) => prev + 1);
-      setIsShaking(true);
-    }
-  };
+    return (sensor) => {
+      const { x, y, z } = sensor;
+
+      const deltaX = x - lastX;
+      const deltaY = y - lastY;
+      const deltaZ = z - lastZ;
+
+      const shakeDetected =
+        (Math.abs(deltaX) > SHAKE_THRESHOLD ||
+          Math.abs(deltaY) > SHAKE_THRESHOLD ||
+          Math.abs(deltaZ) > SHAKE_THRESHOLD) &&
+        (Math.sign(deltaX) !== Math.sign(lastX) ||
+          Math.sign(deltaY) !== Math.sign(lastY) ||
+          Math.sign(deltaZ) !== Math.sign(lastZ) ||
+          (Math.abs(x) < SHAKE_THRESHOLD &&
+            Math.abs(y) < SHAKE_THRESHOLD &&
+            Math.abs(z) < SHAKE_THRESHOLD));
+
+      if (shakeDetected && !lastShakeDetected) {
+        setShakeCount((prev) => prev + 1);
+        setIsShaking(true);
+      }
+
+      lastShakeDetected = shakeDetected;
+      lastX = x;
+      lastY = y;
+      lastZ = z;
+    };
+  })();
 
   const initializeSensor = useCallback(() => {
     if (!("Accelerometer" in window) && !("Gyroscope" in window)) {
