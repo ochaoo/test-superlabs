@@ -13,35 +13,36 @@ function App() {
   const isFirefox = typeof InstallTrigger !== "undefined";
 
   const handleShake = (() => {
-    let lastX = 0,
-      lastY = 0,
-      lastZ = 0;
-    let lastShakeDetected = false;
+    let lastX = null;
+    let lastY = null;
+    let lastZ = null;
+    let lastShakeDetected = 0;
+    const SHAKE_INTERVAL = 500;
 
     return (sensor) => {
       const { x, y, z } = sensor;
+      const currentTime = Date.now();
 
-      const deltaX = x - lastX;
-      const deltaY = y - lastY;
-      const deltaZ = z - lastZ;
-
-      const shakeDetected =
-        (Math.abs(deltaX) > SHAKE_THRESHOLD ||
-          Math.abs(deltaY) > SHAKE_THRESHOLD ||
-          Math.abs(deltaZ) > SHAKE_THRESHOLD) &&
-        (Math.sign(deltaX) !== Math.sign(lastX) ||
-          Math.sign(deltaY) !== Math.sign(lastY) ||
-          Math.sign(deltaZ) !== Math.sign(lastZ) ||
-          (Math.abs(x) < SHAKE_THRESHOLD &&
-            Math.abs(y) < SHAKE_THRESHOLD &&
-            Math.abs(z) < SHAKE_THRESHOLD));
-
-      if (shakeDetected && !lastShakeDetected) {
-        setShakeCount((prev) => prev + 1);
-        setIsShaking(true);
+      if (currentTime - lastShakeDetected < SHAKE_INTERVAL) {
+        return;
       }
 
-      lastShakeDetected = shakeDetected;
+      if (lastX !== null && lastY !== null && lastZ !== null) {
+        const deltaX = Math.abs(x - lastX);
+        const deltaY = Math.abs(y - lastY);
+        const deltaZ = Math.abs(z - lastZ);
+
+        if (
+          (deltaX > SHAKE_THRESHOLD && Math.abs(x) < Math.abs(lastX)) ||
+          (deltaY > SHAKE_THRESHOLD && Math.abs(y) < Math.abs(lastY)) ||
+          (deltaZ > SHAKE_THRESHOLD && Math.abs(z) < Math.abs(lastZ))
+        ) {
+          setShakeCount((prev) => prev + 1);
+          setIsShaking(true);
+          lastShakeDetected = currentTime;
+        }
+      }
+
       lastX = x;
       lastY = y;
       lastZ = z;
