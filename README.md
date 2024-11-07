@@ -5,10 +5,12 @@ This project is a simple web application built with React and Vite that uses the
 # Installation
 
 1. Clone this repository to your local machine:
+
    git clone https://github.com/your-username/shake-counter.git
    cd shake-counter
 
 2. Install the dependencies:
+
    npm install
 
 # Running the App
